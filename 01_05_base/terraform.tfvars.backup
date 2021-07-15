@@ -7,3 +7,5 @@
 ssh_key_name = ""
 
 private_key_path = ""
+
+instance_type = "t2.nano"

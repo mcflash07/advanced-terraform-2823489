@@ -42,15 +42,15 @@ variable "environment_instance_settings" {
   type = map(object({instance_type=string, monitoring=bool}))
   default = {
     "DEV" = {
-      instance_type = "t2.micro", 
+      instance_type = "t2.nano", 
       monitoring = false
     },
    "QA" = {
-      instance_type = "t2.micro", 
+      instance_type = "t2.nano", 
       monitoring = false
     },
     "STAGE" = {
-      instance_type = "t2.micro", 
+      instance_type = "t2.nano", 
       monitoring = false
     },
     "PROD" = {
@@ -136,14 +136,14 @@ resource "aws_security_group" "sg-nodejs-instance" {
 # INSTANCE
 resource "aws_instance" "nodejs1" {
   ami = data.aws_ami.aws-linux.id
-  instance_type = var.environment_instance_type["DEV"]
-  //instance_type = var.environment_instance_settings["PROD"].instance_type
+  //instance_type = var.environment_instance_type["DEV"]
+  instance_type = var.environment_instance_settings["QA"].instance_type
   subnet_id = aws_subnet.subnet1.id
   vpc_security_group_ids = [aws_security_group.sg-nodejs-instance.id]
 
-  monitoring = var.environment_instance_settings["PROD"].monitoring
+  monitoring = var.environment_instance_settings["QA"].monitoring
 
-  tags = {Environment = var.environment_list[0]}
+  tags = {Environment = var.environment_map["QA"]}
 
 }
 

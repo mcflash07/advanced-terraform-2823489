@@ -31,9 +31,9 @@ variable "environment_map" {
 variable "environment_instance_type" {
   type = map(string)
   default = {
-    "DEV" = "t2.micro",
-    "QA" = "t2.micro",
-    "STAGE" = "t2.micro",
+    "DEV" = "t2.nano",
+    "QA" = "t2.nano",
+    "STAGE" = "t2.nano",
     "PROD" = "t2.micro"
   }
 }

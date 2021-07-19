@@ -1,12 +1,8 @@
 # //////////////////////////////
 # VARIABLES
 # //////////////////////////////
-variable "aws_access_key" {}
-
-variable "aws_secret_key" {}
-
 variable "region" {
-  default = "us-east-2"
+  default = "eu-west-1"
 }
 
 variable "vpc_cidr" {
@@ -35,9 +31,9 @@ variable "environment_map" {
 variable "environment_instance_type" {
   type = map(string)
   default = {
-    "DEV" = "t2.micro",
-    "QA" = "t2.micro",
-    "STAGE" = "t2.micro",
+    "DEV" = "t2.nano",
+    "QA" = "t2.nano",
+    "STAGE" = "t2.nano",
     "PROD" = "t2.micro"
   }
 }
@@ -46,15 +42,15 @@ variable "environment_instance_settings" {
   type = map(object({instance_type=string, monitoring=bool}))
   default = {
     "DEV" = {
-      instance_type = "t2.micro", 
+      instance_type = "t2.nano", 
       monitoring = false
     },
    "QA" = {
-      instance_type = "t2.micro", 
+      instance_type = "t2.nano", 
       monitoring = false
     },
     "STAGE" = {
-      instance_type = "t2.micro", 
+      instance_type = "t2.nano", 
       monitoring = false
     },
     "PROD" = {
@@ -68,8 +64,7 @@ variable "environment_instance_settings" {
 # PROVIDERS
 # //////////////////////////////
 provider "aws" {
-  access_key = var.aws_access_key
-  secret_key = var.aws_secret_key
+  profile    = "default"
   region     = var.region
 }
 
@@ -141,12 +136,12 @@ resource "aws_security_group" "sg-nodejs-instance" {
 # INSTANCE
 resource "aws_instance" "nodejs1" {
   ami = data.aws_ami.aws-linux.id
-  instance_type = var.environment_instance_type["DEV"]
-  //instance_type = var.environment_instance_settings["PROD"].instance_type
+  //instance_type = var.environment_instance_type["DEV"]
+  instance_type = var.environment_instance_settings["QA"].instance_type
   subnet_id = aws_subnet.subnet1.id
   vpc_security_group_ids = [aws_security_group.sg-nodejs-instance.id]
 
-  monitoring = var.environment_instance_settings["PROD"].monitoring
+  monitoring = var.environment_instance_settings["QA"].monitoring
 
   tags = {Environment = var.environment_list[0]}
 

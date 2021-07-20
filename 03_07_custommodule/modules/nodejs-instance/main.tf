@@ -71,7 +71,7 @@ resource "aws_instance" "nodejs" {
   count = var.instance_count
   
   ami = var.ami_id
-  instance_type = "t2.micro"
+  instance_type = "t2.nano"
   subnet_id = aws_subnet.subnet.id
   vpc_security_group_ids = [aws_security_group.sg-nodejs-instance.id]
 

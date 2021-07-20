@@ -1,21 +1,16 @@
 # //////////////////////////////
 # VARIABLES
 # //////////////////////////////
-variable "aws_access_key" {}
-
-variable "aws_secret_key" {}
-
 variable "bucket_name" {
-  default = "red30-tfstate"
+  default = "red30-tfstate-ae20210719"
 }
 
 # //////////////////////////////
 # PROVIDER
 # //////////////////////////////
 provider "aws" {
-  access_key = var.aws_access_key
-  secret_key = var.aws_secret_key
-  region = "us-east-2"
+  profile = "default"
+  region = "eu-west-1"
 }
 
 # //////////////////////////////
@@ -29,7 +24,7 @@ data "aws_iam_user" "terraform" {
 # S3 BUCKET
 # //////////////////////////////
 resource "aws_s3_bucket" "red30-tfremotestate" {
-  bucket = var.bucket_name
+  bucket = "${var.bucket_name}"
   force_destroy = true
   acl = "private"
 
